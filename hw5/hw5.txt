@@ -1,0 +1,45 @@
+
+HW #5.
+
+Question D.
+
+1. Theta(x**2)
+
+
+2. Theta(log(x))
+
+
+3. Theta(N**2)
+
+
+4. Theta(M+N)
+
+
+5. Theta(n*lg(n))
+
+
+6. set K = 1/(log_10 b)
+   since log_b x = log_10 x / log_10 b
+   thus log_b x and log_10 x is differ by constant
+   K = 1/(log_10 b)
+   Hence log_b f(x) always belong to Theta(log_10 f(x))
+
+
+7. set p(x)=a_n*x**n + a_(n-1)*x**(n-1)+... + a_1*x + a_0, where a >0 and n>=0
+   log(p(x)) = log(a_n*x**n((a_(n-1)*x**(n-1)+...+a_1*x+a_0)/(a_n*x**n)+1)
+            <= log(a_n*x**n(1+r(1/x))
+            = O(log(x**n)
+            = O(nlog(x))
+    n is a constant for each polynomial.
+
+
+8. since f(n) increases as n increases
+   for any n>=m we have f(n)>=f(m)
+   thus f(n)<=ceil(f(n))
+            <=f(n)+1
+            =f(n)(1+1/f(n))
+            <=f(n)(1+1/f(m))
+            =f(n)*K
+    thus we proved ceil(f(n)) belongs to O(f(n))
+
+

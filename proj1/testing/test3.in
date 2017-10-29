@@ -1,0 +1,7 @@
+create table enrolledt (SID, CCN, Grade);
+/* Have a student add the new course. */
+insert into enrolledt values ('102', '22100', 'B+');
+store enrolledt;
+load enrolledt;
+print enrolledt;
+exit;
