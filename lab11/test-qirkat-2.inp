@@ -1,0 +1,44 @@
+# This is where your second integration test should go!
+set white  b b b b b b - - b b- - - w ww - - w ---bw-
+dump
+@<===
+@<  - - b w -
+@<  w - - w -
+@<  - - - w w
+@<  b - - b b
+@<  b b b b b
+@<===
+a4-a3
+@< Illegal move.
+d3-c3
+@< Illegal move.
+d5-b5
+dump
+@<===
+@<  - w - - -
+@<  w - - w -
+@<  - - - w w
+@<  b - - b b
+@<  b b b b b
+@<===
+e2-e4-c4
+dump
+@<===
+@<  - w - - -
+@<  w - b - -
+@<  - - - w -
+@<  b - - b -
+@<  b b b b b
+@<===
+d3-e3
+c4-d4
+e3-c5
+dump
+@<===
+@<  - w w - -
+@<  w - - - -
+@<  - - - - -
+@<  b - - b -
+@<  b b b b b
+@<===
+quit
