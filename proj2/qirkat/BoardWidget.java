@@ -1,0 +1,180 @@
+package qirkat;
+
+import ucb.gui2.Pad;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
+import java.util.Observer;
+import java.util.Observable;
+import java.awt.event.MouseEvent;
+
+import static qirkat.PieceColor.*;
+
+/**
+ * Widget for displaying a Qirkat board.
+ *
+ * @author QIUCHEN GUO
+ */
+class BoardWidget extends Pad implements Observer {
+
+    /**
+     * Length of side of one square, in pixels.
+     */
+    static final int SQDIM = 50;
+    /**
+     * Number of squares on a side.
+     */
+    static final int SIDE = Move.SIDE;
+    /**
+     * Radius of circle representing a piece.
+     */
+    static final int PIECE_RADIUS = 25;
+
+    /**
+     * Color of white pieces.
+     */
+    private static final Color WHITE_COLOR = Color.WHITE;
+    /** Color of "phantom" white pieces. */
+    /**
+     * Color of black pieces.
+     */
+    private static final Color BLACK_COLOR = Color.BLACK;
+    /**
+     * Color of painted lines.
+     */
+    private static final Color LINE_COLOR = Color.BLACK;
+    /**
+     * Color of blank squares.
+     */
+    private static final Color BLANK_COLOR = new Color(205, 155, 29);
+    /**
+     * Color of selected lines.
+     */
+    private static final Color SELECT_COLOR = new Color(128, 128, 128);
+
+    /**
+     * Stroke for lines..
+     */
+    private static final BasicStroke LINE_STROKE = new BasicStroke(1.0f);
+
+    /**
+     * Stroke for outlining pieces.
+     */
+    private static final BasicStroke OUTLINE_STROKE = LINE_STROKE;
+
+    /**
+     * Model being displayed.
+     */
+    private static Board _model;
+
+    /**
+     * A new widget displaying MODEL.
+     */
+    BoardWidget(Board model) {
+        _model = model;
+        setMouseHandler("click", this::readMove);
+        _model.addObserver(this);
+        _dim = SQDIM * SIDE;
+        setPreferredSize(_dim, _dim);
+    }
+
+    /**
+     * Indicate that the squares indicated by MOV are the currently selected
+     * squares for a pending move.
+     */
+    void indicateMove(Move mov) {
+        _selectedMove = mov;
+        repaint();
+    }
+
+    @Override
+    public synchronized void paintComponent(Graphics2D g) {
+        g.setColor(BLANK_COLOR);
+        g.fillRect(0, 0, _dim, _dim);
+
+        g.setColor(LINE_COLOR);
+        g.setStroke(LINE_STROKE);
+        for (int i = 0; i < 5; i++) {
+            g.drawLine(SQDIM / 2, SQDIM / 2 + i * SQDIM,
+                    _dim - SQDIM / 2, SQDIM / 2 + i * SQDIM);
+            g.drawLine(SQDIM / 2 + i * SQDIM, SQDIM / 2,
+                    SQDIM / 2 + i * SQDIM, _dim - SQDIM / 2);
+
+        }
+        g.drawLine(SQDIM / 2, SQDIM / 2,
+                _dim - SQDIM / 2, _dim - SQDIM / 2);
+        g.drawLine(SQDIM / 2, _dim - SQDIM / 2,
+                _dim - SQDIM / 2, SQDIM / 2);
+        g.drawLine(SQDIM / 2 + SQDIM * 2, SQDIM / 2,
+                SQDIM / 2, SQDIM / 2 + SQDIM * 2);
+        g.drawLine(SQDIM / 2 + SQDIM * 2, SQDIM / 2,
+                SQDIM / 2 + SQDIM * 4, SQDIM / 2 + SQDIM * 2);
+        g.drawLine(SQDIM / 2 + SQDIM * 2, SQDIM / 2,
+                SQDIM / 2, SQDIM / 2 + SQDIM * 2);
+        g.drawLine(SQDIM / 2 + SQDIM * 2, SQDIM / 2 + SQDIM * 4,
+                SQDIM / 2 + SQDIM * 4, SQDIM / 2 + SQDIM * 2);
+        g.drawLine(SQDIM / 2, SQDIM / 2 + SQDIM * 2,
+                SQDIM / 2 + SQDIM * 2, SQDIM / 2 + SQDIM * 4);
+
+        int c, r;
+        for (int k = 0; k < SIDE * SIDE; k += 1) {
+            c = k % SIDE;
+            r = k / SIDE;
+            if (_model.get(k) == WHITE) {
+                g.setColor(WHITE_COLOR);
+                g.fillOval(SQDIM / 2 + (c) * SQDIM - PIECE_RADIUS / 2,
+                        (_dim - SQDIM) - (r) * SQDIM + PIECE_RADIUS / 2,
+                        PIECE_RADIUS, PIECE_RADIUS);
+            } else if (_model.get(k) == BLACK) {
+                g.setColor(BLACK_COLOR);
+                g.fillOval(SQDIM / 2 + (c) * SQDIM - PIECE_RADIUS / 2,
+                        (_dim - SQDIM) - (r) * SQDIM + PIECE_RADIUS / 2,
+                        PIECE_RADIUS, PIECE_RADIUS);
+            }
+        }
+
+        if (_selectedMove != null) {
+            int k = _selectedMove.fromIndex();
+            c = k % SIDE;
+            r = k / SIDE;
+            g.setColor(SELECT_COLOR);
+            g.fillOval(SQDIM / 2 + (c) * SQDIM - PIECE_RADIUS / 2,
+                    (_dim - SQDIM) - (r) * SQDIM + PIECE_RADIUS / 2,
+                    PIECE_RADIUS, PIECE_RADIUS);
+        }
+
+    }
+
+    /**
+     * Notify observers of mouse's current position from click event WHERE.
+     */
+    private void readMove(String unused, MouseEvent where) {
+        int x = where.getX(), y = where.getY();
+        char mouseCol, mouseRow;
+        if (where.getButton() == MouseEvent.BUTTON1) {
+            mouseCol = (char) (x / SQDIM + 'a');
+            mouseRow = (char) ((SQDIM * SIDE - y) / SQDIM + '1');
+            if (mouseCol >= 'a' && mouseCol <= 'g'
+                    && mouseRow >= '1' && mouseRow <= '7') {
+                setChanged();
+                notifyObservers("" + mouseCol + mouseRow);
+            }
+        }
+    }
+
+
+    @Override
+    public synchronized void update(Observable model, Object arg) {
+        repaint();
+    }
+    /**
+     * Dimension of current drawing surface in pixels.
+     */
+    private int _dim;
+
+    /**
+     * A partial Move indicating selected squares.
+     */
+    private Move _selectedMove;
+}

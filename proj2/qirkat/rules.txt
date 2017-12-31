@@ -1,0 +1,13 @@
+Rules of Qirkat 
+
+1. The white player moves first, after which play alternates. There are two types of move: non-capturing moves and capturing moves. 
+
+2. Pieces may move one space along any of the 1 to 5 lines that radiate from its position and do not go backwards towards the base row, except that pieces on the opponent's base row may not move (only jump).
+
+3. If a piece is adjacent to an enemy piece along a line, and the position immediately on the other side of the enemy piece along the same line is empty, it must capture that enemy piece by jumping over it to the empty position, removing the enemy piece from the board. Jumps may happen in any direction. If after jumping, another jump is possible, it must also be taken, with the process continuing as long as there is an available jump. At any point, when several different jumps are possible, the player may pick any one (there is no requirement to find the longest sequence of jumps). Pieces are removed as soon as they are jumped, so no sequence of jumps can jump over the same position twice.
+
+4. Each player must move or jump on every turn. A player who cannot do so loses. 
+
+5. a piece may not move back to a position it has previously occupied unless it has jumped since occupying that position.
+
+

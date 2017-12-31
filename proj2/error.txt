@@ -1,0 +1,7 @@
+I have problem getting doMove() work in Game.java
+
+In the integration test given test4.inp. It seems that the move
+b2-b4-d2-d4 is not readed. then the board is not changed. I did
+checked my makemove method in Board.java. It works fine. 
+
+So I think my doMove() is not implemented properly. 

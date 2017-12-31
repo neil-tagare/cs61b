@@ -1,0 +1,11 @@
+Moves.
+  To make a move, click on the piece you wish to move and then on each of the squares you wish to move in sequence.
+
+Setting players
+  The player type can be setted up in Options->Players. Default setting is white manual and black AI.
+
+Starting and Restarting
+  Selecting menu item Game->Start ends set-up mode and starts play.
+  Selecting item Game->Clears the board the goes back to set-up mode
+  Selecting item Game->Restart the board the goes back to playing mode
+
